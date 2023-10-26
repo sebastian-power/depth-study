@@ -1,4 +1,4 @@
-,Region Code,Region Name,Country Code,Country Name,Year,Sex,Age group code,Age Group,Number,Percentage of cause-specific deaths out of total deaths,Age-standardized death rate per 100 000 standard population,Death rate per 100 000 population
+,Region Code,Region Name,iso_code,Country Name,Year,Sex,Age group code,Age Group,Number,Percentage of cause-specific deaths out of total deaths,Age-standardized death rate per 100 000 standard population,Death rate per 100 000 population
 3969,NAC,North America and the Caribbean,ATG,Antigua and Barbuda,2014,All,Age_all,[All],20.0,3.44827586,20.3408731,21.607139
 7035,CSA,Central and South America,ARG,Argentina,2014,All,Age_all,[All],28333.0,8.79811201,47.9448453,66.45087702
 8946,AS,Asia,ARM,Armenia,2014,All,Age_all,[All],1339.0,4.83149311,31.20703791,44.42838519

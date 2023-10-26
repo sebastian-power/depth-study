@@ -1,13 +1,51 @@
 import geopandas as gpd
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
+import scipy.stats as stats
 
 world = gpd.read_file(gpd.datasets.get_path("naturalearth_lowres"))
 respiratory_data = pd.read_csv("data/less_data.csv")
 co2_data = pd.read_csv("data/co2-data.csv")
 
-merged = pd.merge(respiratory_data, co2_data, on="")
-plt.scatter(co2_data)
+merged = pd.merge(respiratory_data, co2_data, on="iso_code")
+np.set_printoptions(suppress=True)
+x = np.array(merged["Percentage of cause-specific deaths out of total deaths"])
+y = np.array(merged["co2"])
+
+valid_indices = np.logical_and(~np.isnan(x), ~np.isnan(y))
+x = x[valid_indices]
+y = y[valid_indices]
+
+plt.scatter(x, y, label="Data points")
+plt.yscale("log")
+plt.xscale("log")
+print(f"X: {x}")
+print(f"Y: {y}")
+m, b = np.polyfit(np.log(x), np.log(y), 1)
+print(f"M: {m}")
+print(f"B: {b}")
+print(f"X_FIT: {x}")
+y_fit = np.exp(m * np.log(x) + b)
+print(f"Y_FIT: {y_fit}")
+plt.plot(x, y_fit, color="red")
+correlation_coefficient = np.corrcoef(np.array(x), np.array(y))[0, 1]
+print(correlation_coefficient)
+n = len(y_fit)
+df = n - 2
+t_statistic = correlation_coefficient * np.sqrt(df / (1 - correlation_coefficient**2))
+alpha = 0.05
+critical_region = stats.t.ppf(1 - alpha/2, df)
+if np.abs(t_statistic) > critical_region:
+    print("The correlation is statistically significant.")
+else:
+    print("The correlation is not statistically significant.")
+plt.xlabel("Percentage of respiratory disease deaths out of total deaths")
+plt.ylabel("CO2 levels")
+plt.title("Respiratory disease deaths vs CO2 levels")
+plt.legend()
+plt.show()
+
 
 # merged = world.set_index("iso_a3").join(respiratory_data.set_index("Country Code"))
 
