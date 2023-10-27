@@ -2,13 +2,13 @@ import matplotlib.pyplot as plt
 import geopandas as gpd
 import pandas as pd
 
-air_data = pd.read_csv("data/share-above-who-pollution-guidelines.csv")
-air_data = air_data[air_data["Year"] == 2014]
+air_data = pd.read_csv("data/daily-smoking-prevalence-bounds.csv")
+air_data = air_data[air_data["Year"] == 2010]
 
 world = gpd.read_file(gpd.datasets.get_path("naturalearth_lowres"))
 merged = world.set_index("iso_a3").join(air_data.set_index("iso_code"))
 fig, ax = plt.subplots(1, 1, figsize=(18, 12))
-merged.plot(column="PM2.5 air pollution, population exposed to levels exceeding WHO guideline value (% of total)", cmap="OrRd", linewidth=0.8, ax=ax, edgecolor="0.8", legend=True, missing_kwds={'color': 'lightgrey'})
+merged.plot(column="Daily smoking prevalence", cmap="OrRd", linewidth=0.8, ax=ax, edgecolor="0.8", legend=True, missing_kwds={'color': 'lightgrey'})
 ax.set_title("Respiratory Disease Deaths by Country")
 plt.yticks([])
 plt.xticks([])

@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
-import scipy.stats as stats
+from corrpy import corrcheck
 
 respiratory_data = pd.read_csv("data/who_respiratory_data.csv", index_col=False)
 co2_data = pd.read_csv("data/trimmed_co2_data.csv")
@@ -17,16 +17,7 @@ print(respiratory_data["Year"])
 co2_levels = [cent["co2"] for index, cent in co2_data.iterrows()]
 x = np.arange(2000,2020)
 a,b = np.polyfit(x, np.array(disease_prevalence), 1)
-correlation_coefficient = np.corrcoef(np.array(co2_levels), np.array(disease_prevalence))[0, 1]
-n = len(disease_prevalence)
-df = n - 2
-t_statistic = correlation_coefficient * np.sqrt(df / (1 - correlation_coefficient**2))
-alpha = 0.05
-critical_region = stats.t.ppf(1 - alpha/2, df)
-if np.abs(t_statistic) > critical_region:
-    print("The correlation is statistically significant.")
-else:
-    print("The correlation is not statistically significant.")
+print(corrcheck(x,y))
 fig, ax1 = plt.subplots()
 ax1.set_ylabel("CO2 levels(million tonnes)")
 ax1.set_xlabel("Year")
