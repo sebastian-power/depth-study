@@ -3,12 +3,17 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+import mplcursors
 from corrpy import corrcheck
 
 respiratory_data = pd.read_csv("data/less_data.csv")
 co2_data = pd.read_csv("data/co2-data.csv")
 
+removed_indicies = (2.07780563,1.0761712,1.26015586, 1.54864178, 1.54846722, 1.56382079, 2.14255167, 10.63094209, 4.53149002, 4.34782609, 4.0, 3.44827586, 3.15533981, 3.06122449, 2.44299674, 1.21626893, 6.6857385, 4.7706422, 2.21105528, 1.5560166, 2.30769231)
 merged = pd.merge(respiratory_data, co2_data, on="iso_code")
+mask = merged['Percentage of cause-specific deaths out of total deaths'].isin(removed_indicies)
+merged = merged[~mask]
+print(len(merged.index))
 np.set_printoptions(suppress=True)
 x = np.array(merged["Percentage of cause-specific deaths out of total deaths"])
 y = np.array(merged["co2"])
@@ -31,9 +36,10 @@ print(f"Y_FIT: {y_fit}")
 plt.plot(x, y_fit, color="red")
 print(corrcheck(x,y))
 plt.xlabel("Percentage of respiratory disease deaths out of total deaths")
-plt.ylabel("CO2 levels")
-plt.title("Respiratory disease deaths vs CO2 levels")
+plt.ylabel("CO2 levels(million tonnes)")
+plt.title("Respiratory disease deaths vs CO2 levels by country")
 plt.legend()
+mplcursors.cursor(hover=True)
 plt.show()
 
 

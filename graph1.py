@@ -13,11 +13,10 @@ dis_change2 = [int(cent["Total"]) for index, cent in respiratory_data.iterrows()
 co2_change = [int(cent["co2"]) for index, cent in co2_data.iterrows() if cent["year"] == 2019]
 co2_change2 = [int(cent["co2"]) for index, cent in co2_data.iterrows() if cent["year"] == 2000]
 disease_prevalence = [cent["Total"] for index, cent in respiratory_data.iterrows()]
-print(respiratory_data["Year"])
 co2_levels = [cent["co2"] for index, cent in co2_data.iterrows()]
 x = np.arange(2000,2020)
 a,b = np.polyfit(x, np.array(disease_prevalence), 1)
-print(corrcheck(x,y))
+print(corrcheck(disease_prevalence, co2_levels))
 fig, ax1 = plt.subplots()
 ax1.set_ylabel("CO2 levels(million tonnes)")
 ax1.set_xlabel("Year")
@@ -31,7 +30,7 @@ ax2.plot(x, a*np.array(x)+b, label="Disease Deaths")
 ax2.legend(loc="lower right")
 ax2.set_ylabel("Respiratory Diseases Deaths")
 plt.title("Deaths by Respiratory Diseases in Australia vs CO2 levels in Australia")
-print(round(((pop_change[0] - pop_change2[0])/pop_change2[0])*100, 2))
-print(round(((dis_change[0] - dis_change2[0])/dis_change2[0])*100, 2))
+print(f"Population % change: {round(((pop_change[0] - pop_change2[0])/pop_change2[0])*100, 2)}")
+print(f"Respiratory disease prevalence % change: {round(((dis_change[0] - dis_change2[0])/dis_change2[0])*100, 2)}")
 print(round(((co2_change[0] - co2_change2[0])/co2_change2[0])*100, 2))
 plt.show()
